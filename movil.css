@@ -1,0 +1,171 @@
+/* =========================================================
+   Versión móvil · capa de COMPOSICIÓN sobre styles.css
+   No cambia colores, tipografías ni componentes: solo cómo se colocan.
+   Diapositivas en horizontal, una por pantalla, con scroll interno si hace falta.
+   ========================================================= */
+html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+body.m{font-size:16px}
+
+/* ---------- deck horizontal ---------- */
+body.m .track{flex-direction:row;width:100%;height:100vh;height:100dvh;transition:transform .6s cubic-bezier(.77,0,.18,1)}
+body.m .slide{flex:0 0 100%;width:100%;height:100%;display:block;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+body.m .slide::after{display:none}
+body.m .stage,body.m #hardware .stage,body.m #freertos .stage{position:relative;left:auto;top:auto;transform:none;width:100%;height:auto;min-height:100%;padding:62px 18px 96px;gap:14px;justify-content:center;
+  background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:28px 28px}
+@media (prefers-reduced-motion:reduce){body.m .track{transition:none}}
+
+/* ---------- navegación inferior ---------- */
+.m-nav{position:fixed;left:50%;bottom:max(14px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:40;display:flex;align-items:center;gap:6px;padding:5px;border-radius:999px;background:rgba(10,23,32,.78);border:1px solid var(--line);backdrop-filter:blur(10px)}
+.m-nav button{width:48px;height:42px;border:0;border-radius:999px;background:transparent;color:var(--ink);font-size:20px;cursor:pointer}
+.m-nav button:active{background:var(--card2);color:var(--mint)}
+.m-nav button:disabled{opacity:.25;cursor:default}
+.m-nav span{min-width:70px;text-align:center;font:600 12px var(--mono);letter-spacing:.1em;color:var(--mint)}
+body.m .tb-pill{top:12px;right:12px;font-size:12px;padding:7px 12px}
+body.m .progress{height:3px}
+
+/* ---------- tipografía ---------- */
+body.m h2,body.m #freertos h2,body.m #hardware .stage h2{font-size:30px;line-height:1.08;max-width:none}
+body.m .cover h1{font-size:38px;max-width:none}
+body.m .claim{font-size:20px}
+body.m .kicker{font-size:12px;gap:10px}
+body.m .kicker .num{min-width:38px;height:26px}
+body.m .lead,body.m .lead[style]{font-size:15px!important}
+body.m .tiny,body.m .hint{font-size:12px}
+body.m .byline{font-size:15px;gap:6px 14px}
+body.m .cta-row{gap:8px}
+body.m .btn.big{padding:13px 18px;font-size:16px}
+body.m .cover-art{width:300px;right:-40px;bottom:60px;opacity:.22}
+body.m .card{padding:16px;border-radius:16px}
+body.m .big-n{font-size:40px}
+body.m .mono-n{font-size:34px}
+body.m .lab{font-size:12px}
+
+/* ---------- rejillas a una columna ---------- */
+body.m .grid2,body.m .grid3,body.m .arch,body.m .hw,body.m .unc,body.m .topo,body.m .rt-layout{grid-template-columns:1fr;gap:14px}
+body.m .wgrid{grid-template-columns:1fr!important;gap:14px}
+body.m .grid4{grid-template-columns:1fr 1fr;gap:12px}
+body.m .readout{grid-template-columns:1fr;gap:8px}
+body.m .readout.two{grid-template-columns:1fr 1fr}
+body.m .readout b{font-size:18px}
+body.m .vrow{grid-template-columns:repeat(3,1fr);gap:8px}
+body.m .vchip{padding:10px;font-size:11px}
+body.m .vchip b{font-size:15px}
+
+/* ---------- controles y widgets ---------- */
+body.m .widget{padding:16px;border-radius:18px}
+body.m .widget>div[style]{font-size:16px!important}
+body.m .controls label{min-width:0;flex:1 1 100%!important}
+body.m .controls.row{gap:12px}
+body.m input[type=number]{width:100%}
+body.m .verdict{font-size:15px;padding:12px 14px}
+body.m .legend{font-size:12px;gap:6px 12px}
+body.m .seg{border-radius:18px}
+body.m .seg button,body.m .seg.big button{padding:8px 12px;font-size:13px}
+body.m .presets .btn.small{padding:8px 12px;font-size:13px}
+.scrollx{overflow-x:auto}
+body.m #map{max-height:none;min-width:620px}
+
+/* ---------- 01 problema: la escala pasa a vertical ---------- */
+body.m .gap-scale{height:auto;margin:8px 0 0;display:flex;flex-direction:column;gap:16px}
+body.m .gs-line{left:16px;right:auto;top:8px;bottom:8px;width:6px;height:auto;background:linear-gradient(180deg,var(--mint),var(--amber),var(--coral))}
+body.m .gs-pt{position:relative;left:auto!important;top:auto;transform:none;width:100%;flex-direction:row;text-align:left;gap:14px;font-size:14px}
+body.m .gs-pt i{flex:none;width:30px;height:30px;border-width:3px;margin-left:1px}
+body.m .gs-info{font-size:15px}
+
+/* ---------- 02 tarjetas ---------- */
+body.m .flip{height:210px}
+body.m .flip .f{padding:16px;border-radius:18px}
+body.m .flip .fi{font-size:38px;height:40px}
+body.m .flip h3{font-size:20px;margin:12px 0 6px}
+body.m .flip .front p{font-size:13px}
+body.m .flip .back{font-size:13px}
+body.m .flip .more{font-size:11px}
+
+/* ---------- 03 matriz sin scroll lateral ---------- */
+body.m .tablewrap{overflow-x:auto}
+body.m .legend-ic{flex-wrap:wrap;gap:6px 14px;font-size:12px}
+body.m .mx{font-size:12px;border-spacing:0 5px}
+body.m .mx th{font-size:9px;padding:4px 1px;letter-spacing:0}
+body.m .mx th.cov,body.m .mx td:last-child{display:none}
+body.m .mx td{padding:6px 1px}
+body.m .mx td:first-child{padding-left:10px;white-space:normal;line-height:1.2;border-radius:12px 0 0 12px}
+body.m .mx td:nth-last-child(2){border-right:1px solid var(--line);border-radius:0 12px 12px 0}
+body.m .mx .yr{display:block;margin:2px 0 0;font-size:10px}
+body.m .mx .badge{display:none}
+body.m .mx tbody tr:hover{transform:none}
+body.m .ic{width:24px;height:24px;font-size:13px;border-width:2px}
+body.m .detail{font-size:14px;padding:12px 14px}
+
+/* ---------- 04 arquitectura ---------- */
+body.m .layer{padding:18px 16px;border-radius:16px;border-left-width:8px}
+body.m .ln{font-size:24px}
+body.m .ls{font-size:12px;text-align:right}
+body.m .packet{right:20px}
+body.m .arch-d h3{font-size:26px}
+body.m .arch-d ul{font-size:15px}
+
+/* ---------- 05 hardware ---------- */
+body.m .hardware-visual{width:100%}
+body.m .hw-d h3{font-size:30px}
+body.m .hw-d .what{font-size:15px}
+body.m .tiles div{font-size:10px}
+body.m .tiles b{font-size:14px}
+body.m .costbar div{font-size:10px}
+
+/* ---------- 06 cadena de adquisición ---------- */
+body.m .pipe{grid-template-columns:1fr}
+body.m .pstep{margin:0 0 22px;min-height:0;padding:12px 14px}
+body.m .pstep .v{font-size:22px}
+body.m .pstep:not(:last-child)::after{right:auto;left:50%;top:auto;bottom:-22px;width:3px;height:22px;background:linear-gradient(180deg,var(--mint),var(--amber))}
+body.m .pstep:nth-child(5){display:none}
+body.m .pstep:nth-child(4){margin-bottom:0}
+body.m .pstep:nth-child(4)::after{display:none}
+body.m .flowdot{display:none}
+
+/* ---------- 07 FreeRTOS ---------- */
+body.m .rt-layout{margin-top:4px}
+body.m .rt-priority{border-right:0;padding-right:0}
+body.m .rt-priority-row{grid-template-columns:44px 1fr;padding:8px 0}
+body.m .rt-priority-row b{font-size:32px}
+body.m .rt-path{border-left:0}
+body.m .rt-step{grid-template-columns:34px 1fr;min-height:0;padding:10px 4px}
+body.m .rt-step strong{font-size:17px}
+body.m .rt-step p{display:none}
+body.m .rt-step.on p{display:block}
+body.m .rt-result{border-left:0;border-top:1px solid var(--line);padding:16px 0 0}
+body.m .rt-result>strong{font-size:68px;margin-top:6px}
+body.m .rt-result p{margin:12px 0}
+
+/* ---------- 08 · 09 ---------- */
+body.m .tabs p{font-size:15px;min-height:90px;margin-top:12px}
+body.m .val-card{min-height:0}
+body.m .vtxt{font-size:15px}
+
+/* ---------- 11 topologías ---------- */
+body.m .topo-svg svg{max-height:250px}
+body.m #topoTxt h3{font-size:26px}
+body.m #topoTxt p{font-size:15px}
+body.m #mapInfo h3{font-size:22px}
+
+/* ---------- 13 consumo ---------- */
+body.m .bars .row{grid-template-columns:1fr;gap:4px;margin:12px 0;font-size:15px}
+body.m .bars .val{text-align:left;font-size:14px}
+body.m .bars .track2{height:24px}
+
+/* ---------- 15 · 16 ---------- */
+body.m .mode ul{font-size:14px}
+body.m .mode p.tiny{display:none}
+body.m .strip{height:34px}
+body.m .strip i{top:7px}
+body.m .wide-note{border-left-width:6px}
+body.m .ticks{font-size:14px}
+body.m .ticks li{padding:7px 0 7px 28px}
+body.m .ticks li::before{top:9px}
+
+/* ---------- gracias ---------- */
+body.m .end .cta-row{flex-direction:column;align-items:flex-start}
+
+/* sin efectos "hover" pegajosos al tocar */
+@media (hover:none){
+  body.m .layer:hover,body.m .mode:hover,body.m .rt-priority-row:hover,body.m .chip:hover{transform:none}
+}

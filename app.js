@@ -343,7 +343,8 @@ $$('.flip').forEach(f => f.addEventListener('click', e => { if (!e.target.closes
       ${(k === 'hw' ? [0, .27, .54] : [0]).map(d => `<circle r="6" fill="${s.c}" style="filter:drop-shadow(0 0 6px ${s.c})"><animateMotion dur="${s.pulse}s" begin="${d}s" repeatCount="indefinite" path="${PULSE[k]}"/></circle>`).join('')}
     </g>`;
   });
-  $('#board').innerHTML = h;
+  const board = $('#board');
+  if (board) board.innerHTML = h;
 
   const cost = [['ESP32-C6', 6.49, '#dfe7e4', 'esp'], ['SHT31-D', 3.19, C.mint, 'sht'], ['SCD30', 16.61, C.coral, 'scd'], ['AS7341', 9.03, C.lilac, 'as'], ['DS18B20', 1.27, C.amber, 'ds']];
   const costHtml = `<div><div class="lab" style="margin-bottom:6px">Coste del prototipo · 36,59 €</div><div class="costbar">${cost.map(([n, v, c, k]) => `<div style="flex:${v};background:${c}" title="${n}: ${fmt(v, 2)} €" data-k="${k}">${v > 5 ? fmt(v, 2) + ' €' : ''}</div>`).join('')}</div><div class="tiny" style="margin-top:6px">Nodo completo con panel, batería y caja: de 85 a 128 € de material.</div></div>`;
@@ -362,6 +363,9 @@ $$('.flip').forEach(f => f.addEventListener('click', e => { if (!e.target.closes
       <div class="tiles">${s.tiles.map(([a, b]) => `<div>${a}<b>${b}</b></div>`).join('')}</div>${ticker}${costHtml}`;
     $$('#hwD .costbar div').forEach(d => d.addEventListener('click', () => show(d.dataset.k)));
   }
+  show('scd');
+  if (!board) return;
+
   $$('#board .sg').forEach(g => {
     if (g.dataset.k === 'bus') return;
     g.addEventListener('click', () => show(g.dataset.k));
@@ -373,25 +377,32 @@ $$('.flip').forEach(f => f.addEventListener('click', e => { if (!e.target.closes
   });
   seg('modelMode', v => {
     const model = v === 'model';
-    $('#board').classList.toggle('off', model);
+    const wiring = v === 'wiring';
+    const schematic = v === 'schematic';
+    $('#board').classList.toggle('off', !schematic);
+    $('#hardwareRef').classList.toggle('on', wiring);
     $('#proto3d').classList.toggle('on', model);
+    $('#busSel').classList.toggle('hidden', !schematic);
     $('#modelHint').style.display = model ? 'inline' : 'none';
   });
   const proto = $('#proto3d'), assembly = $('#protoAssembly');
-  let rx = 58, rz = -28, dragging = false, px = 0, py = 0;
+  let rx = 24, rz = -5, dragging = false, px = 0, py = 0;
   proto.addEventListener('pointerdown', e => {
     dragging = true; px = e.clientX; py = e.clientY;
     proto.setPointerCapture(e.pointerId); proto.classList.add('dragging');
   });
   proto.addEventListener('pointermove', e => {
     if (!dragging) return;
-    rz += (e.clientX - px) * .35; rx = Math.max(25, Math.min(75, rx - (e.clientY - py) * .25));
+    rz += (e.clientX - px) * .35; rx = Math.max(8, Math.min(55, rx - (e.clientY - py) * .25));
     px = e.clientX; py = e.clientY;
     assembly.style.transform = `rotateX(${rx}deg) rotateZ(${rz}deg)`;
   });
   proto.addEventListener('pointerup', () => { dragging = false; proto.classList.remove('dragging'); });
   proto.addEventListener('pointercancel', () => { dragging = false; proto.classList.remove('dragging'); });
-  show('scd');
+  proto.addEventListener('dblclick', () => {
+    rx = 24; rz = -5;
+    assembly.style.transform = `rotateX(${rx}deg) rotateZ(${rz}deg)`;
+  });
 })();
 
 /* ---------------- 06 · Cadena de adquisición ---------------- */

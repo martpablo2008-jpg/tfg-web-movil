@@ -117,6 +117,9 @@ b{color:#fff}
 .cover .tiny{max-width:80ch}
 .cta-row{display:flex;flex-wrap:wrap;gap:14px;margin:8px 0}
 .cover-art{position:absolute;right:30px;bottom:110px;width:640px;color:var(--amber);pointer-events:none;opacity:.85}
+.cover-qr{position:absolute;z-index:4;right:clamp(18px,5vw,84px);bottom:clamp(88px,10vh,128px);width:clamp(180px,21vw,244px);margin:0;padding:12px;background:#f4f1e8;color:#0a1720;border:1px solid rgba(127,224,180,.7);box-shadow:0 12px 36px rgba(0,0,0,.3)}
+.cover-qr img{display:block;width:100%;height:auto;image-rendering:pixelated}
+.cover-qr figcaption{padding:9px 2px 0;text-align:center;font:600 10px/1.35 var(--mono);letter-spacing:.04em;text-transform:uppercase}
 .pulse circle:last-child{animation:ping 2.4s ease-out infinite;transform-origin:300px 250px}
 @keyframes ping{from{transform:scale(1);opacity:.9}to{transform:scale(6);opacity:0}}
 .end .refs{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 22px;font-size:15px;color:var(--muted);max-width:1100px}
@@ -211,23 +214,16 @@ td.dim .ic{opacity:.18}
 
 /* ---------- 05 hardware ---------- */
 .hw{display:grid;grid-template-columns:800px 1fr;gap:24px;align-items:stretch}
-.board-wrap{background:rgba(0,0,0,.22);border:1px solid var(--line);border-radius:22px;padding:14px;position:relative}
-#board{width:100%;height:auto;display:block}
-.busf{position:absolute;left:18px;bottom:16px}
-.model-tools{position:absolute;z-index:5;right:18px;top:16px;display:flex;align-items:center;gap:10px}
-#modelHint{font:600 11px var(--mono);color:var(--muted);display:none}
-.proto3d{display:none;width:100%;height:492px;align-items:center;justify-content:center;perspective:900px;cursor:grab;overflow:hidden;touch-action:none}
-.proto3d.on{display:flex}
-.proto3d.dragging{cursor:grabbing}
-#board.off{display:none}
-.proto-shadow{position:absolute;width:380px;height:70px;border-radius:50%;background:rgba(0,0,0,.48);filter:blur(14px);transform:translateY(180px)}
-.proto-assembly{position:relative;width:430px;height:300px;transform-style:preserve-3d;transform:rotateX(58deg) rotateZ(-28deg);transition:transform .12s linear}
-.proto-board{position:absolute;left:55px;top:55px;width:320px;height:190px;border-radius:18px;background:#173c38;border:3px solid #65b59b;box-shadow:inset 0 0 0 8px rgba(255,255,255,.04),18px 28px 20px rgba(0,0,0,.32);transform:translateZ(28px)}
-.proto-chip{position:absolute;left:112px;top:58px;width:96px;height:74px;background:#111b20;border:2px solid #dfe7e4;border-radius:8px;display:grid;place-items:center;font:700 13px var(--mono);color:#eef4f1;box-shadow:0 8px 0 #080d10}
-.proto-pin{position:absolute;width:28px;height:28px;border:2px solid #d2ad5b;border-radius:50%}.p1{left:18px;top:18px}.p2{right:18px;top:18px}.p3{right:18px;bottom:18px}
-.proto-sensor{position:absolute;width:74px;height:54px;border-radius:8px;border:2px solid currentColor;background:#17252a;display:grid;place-items:center;font:700 10px var(--mono);box-shadow:8px 12px 12px rgba(0,0,0,.28);transform:translateZ(65px)}
-.proto-sensor span{color:#eef4f1}
-.sensor-sht{left:-10px;top:10px;color:var(--mint)}.sensor-scd{right:-18px;top:-10px;color:var(--coral)}.sensor-as{right:-42px;bottom:4px;color:var(--lilac)}.sensor-ds{left:-20px;bottom:-20px;color:var(--amber)}.sensor-hw{left:175px;bottom:-86px;color:var(--sky)}
+.board-wrap{width:100%;padding:0;position:relative}
+.hardware-visual{position:relative;width:min(100%,1140px);margin:0 auto;overflow:hidden}
+.hardware-image{position:relative;width:100%}
+.hardware-image>img{display:block;width:100%;height:auto}
+.wire-motion{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.wire-motion path{fill:none;stroke:none}
+.wire-motion circle{filter:drop-shadow(0 0 4px currentColor)}
+#hardware .stage{gap:10px;padding:54px 110px 50px}
+#hardware .stage h2{font-size:46px}
+.hardware-visual figcaption{font:500 11px/1.2 var(--mono);color:var(--muted);text-align:right;padding-top:5px}
 .sg{cursor:pointer;transition:opacity .35s}
 .sg.off{opacity:.18}
 .sg .mod{transition:filter .25s}
@@ -375,10 +371,9 @@ body.mobile .rt-priority{border-right:0;border-bottom:1px solid var(--line);padd
 body.mobile .rt-path{border-left:0}
 body.mobile .rt-result{border-left:0;border-top:1px solid var(--line);padding:18px 0 0}
 body.mobile .rt-result>strong{font-size:72px;margin-top:12px}
-body.mobile .proto3d{height:380px}
-body.mobile .proto-assembly{transform:scale(.72) rotateX(58deg) rotateZ(-28deg)}
 body.mobile #rC{max-height:220px}
 body.mobile .page-rail{display:none}
+body.mobile .cover-qr{display:none}
 body.mobile .tb-pill{top:10px;right:10px;max-width:44px;white-space:nowrap;overflow:hidden;color:transparent}
 body.mobile .tb-pill .dot-live{flex:none}
 body.mobile .stage{gap:14px}
@@ -414,11 +409,6 @@ body.mobile .mobile-summary article p{
   color:var(--muted);
   margin:0;
 }
-body.mobile #hardware .model-tools,
-body.mobile #hardware #board,
-body.mobile #hardware #proto3d,
-body.mobile #hardware #busSel{display:none!important}
-
 body.mobile .rt-grid{grid-template-columns:1fr 1fr;gap:10px}
 body.mobile .rt-box.mint,body.mobile .rt-box.sky{width:88%}
 body.mobile .rt-box.rt-main{width:70%}
@@ -429,6 +419,8 @@ body.mobile .rt-box.rt-output{width:60%}
   body.mobile h2{font-size:30px}
   body.mobile .cover h1{font-size:34px}
   body.mobile .claim{font-size:18px}
+  body.mobile #hardware .stage{padding:62px 16px 72px}
+  body.mobile #hardware .stage h2{font-size:30px}
   body.mobile .grid4{grid-template-columns:1fr}
   body.mobile .mobile-slide .mobile-summary{grid-template-columns:1fr}
   body.mobile .mobile-summary article{padding:12px}

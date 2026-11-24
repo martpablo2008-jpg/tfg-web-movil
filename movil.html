@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a1720">
+<title>Nodo IoT para el microclima del invernadero · TFG 688.26.114 · versión móvil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,600&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="movil.css">
+</head>
+<body class="m">
+<div class="progress"><i id="prog"></i></div>
+
+<a class="tb-pill" href="https://eu.thingsboard.cloud/dashboards/all/3577f140-e5cf-11f1-a132-5352bc594cd2" target="_blank" rel="noopener"><span class="dot-live"></span>Sistema real</a>
+
+<div class="track" id="track">
+
+<!-- PORTADA -->
+<section class="slide cover" id="inicio" data-title="Portada" data-num="">
+ <div class="stage">
+  <div class="rv kicker">TFG · EUPLA · Universidad de Zaragoza</div>
+  <h1 class="rv">Sistema IoT para el <em>microclima</em> del invernadero</h1>
+  <div class="rv byline"><b>Diego Martínez Malumbres</b><span>Director: David Asiain Ansorena</span></div>
+  <p class="rv claim">Un nodo de <mark>menos de 50&nbsp;€</mark> que mide el microclima, da cada dato con su <mark class="m2">incertidumbre</mark> y se alimenta con <mark class="m3">energía&nbsp;solar</mark>.</p>
+  <div class="rv cta-row">
+    <button class="btn big" data-go="1">Empezar <span>→</span></button>
+    <a class="btn ghost big" href="https://eu.thingsboard.cloud/dashboards/all/3577f140-e5cf-11f1-a132-5352bc594cd2" target="_blank" rel="noopener">Sistema real ↗</a>
+  </div>
+  <p class="rv tiny">Desliza ← → o usa los botones. La incertidumbre está contrastada en dos puntos fijos, no en el CO₂.</p>
+ </div>
+<svg class="cover-art" viewBox="0 0 600 400" aria-hidden="true">
+   <path d="M40 360 Q300 -60 560 360" fill="none" stroke="currentColor" stroke-width="2" opacity=".45"/>
+   <path d="M80 360 Q300 0 520 360" fill="none" stroke="#7fe0b4" stroke-width="1.5" opacity=".35"/>
+   <path d="M120 360 Q300 60 480 360" fill="none" stroke="#86c5ff" stroke-width="1" opacity=".3"/>
+   <line x1="20" y1="360" x2="580" y2="360" stroke="currentColor" opacity=".4"/>
+   <g class="pulse"><circle cx="300" cy="250" r="10" fill="#7fe0b4"/><circle cx="300" cy="250" r="10" fill="none" stroke="#7fe0b4"/></g>
+ </svg>
+</section>
+
+<!-- 01 PROBLEMA -->
+<section class="slide" id="problema" data-title="El problema" data-num="01">
+ <div class="stage">
+  <div class="rv kicker"><span class="num">01</span>El problema</div>
+  <h2 class="rv">Un túnel en Alfaro <em>que nadie mide</em></h2>
+  <div class="grid3">
+    <div class="rv card">
+      <div class="lab">El invernadero</div>
+      <div class="big-n"><span class="count" data-to="324">0</span><small> m²</small></div>
+      <p>Túnel de <b>36 × 9 m</b>, sin ventanas ni calefacción. Ventila por las puertas.</p>
+    </div>
+    <div class="rv card hot">
+      <div class="lab" style="color:var(--coral)">El riesgo</div>
+      <div class="big-n" style="color:var(--coral)">HR &gt; <span class="count" data-to="90">0</span><small> %</small></div>
+      <p>La humedad alta favorece hongos:</p>
+      <div class="chips"><span class="chip">botritis</span><span class="chip">mildiu</span><span class="chip">cercospora</span></div>
+    </div>
+    <div class="rv card">
+      <div class="lab">Hoy</div>
+      <div class="big-n" style="font-style:italic;font-weight:400;font-size:28px;line-height:1.1">«a ojo de buen cubero»</div>
+      <p>Sin datos del interior del túnel.</p>
+    </div>
+  </div>
+  <div class="rv card">
+    <div class="lab">El hueco del mercado <span class="hint">· toca cada punto</span></div>
+    <div class="gap-scale">
+      <div class="gs-line"></div>
+      <button class="gs-pt" style="left:3%" data-i="Termómetro de mínimas y máximas: dos números al día, sin registro ni avisos."><i></i><span>Termómetro<br>mín./máx.</span></button>
+      <button class="gs-pt me" style="left:30%" data-i="Este nodo: 36,59 € de electrónica en el prototipo; de 85 a 128 € de material con panel, batería y caja."><i></i><span>Este nodo<br>&lt; 50 € electrónica</span></button>
+      <button class="gs-pt" style="left:55%" data-i="SenseCAP S2120: estación comercial de unos 230 €, sin CO₂ ni suelo."><i></i><span>Estación comercial<br>≈ 230 €</span></button>
+      <button class="gs-pt" style="left:95%" data-i="Ordenador de clima: más de 2000 €."><i></i><span>Ordenador de clima<br>&gt; 2000 €</span></button>
+    </div>
+    <p class="gs-info" id="gsInfo">Entre un termómetro y un ordenador de clima casi no hay nada.</p>
+  </div>
+ </div>
+</section>
+
+<!-- 02 OBJETIVOS -->
+<section class="slide" id="objetivos" data-title="Objetivos" data-num="02">
+ <div class="stage">
+  <div class="rv kicker"><span class="num">02</span>Objetivos</div>
+  <h2 class="rv">Cuatro <em>objetivos</em></h2>
+  <p class="rv lead">Toca cada tarjeta.</p>
+  <div class="grid4">
+    <button class="rv flip" style="--c:#7fe0b4"><div class="f front"><span class="fi">01</span><h3>Sensores</h3><p>Medir el microclima: aire, CO₂, luz y suelo.</p><span class="more">Pulsa ↻</span></div><div class="f back"><p>Cinco sensores y un ESP32-C6.</p><span class="goto" data-go="5">Ver hardware →</span></div></button>
+    <button class="rv flip" style="--c:#86c5ff"><div class="f front"><span class="fi">02</span><h3>Arquitectura IoT</h3><p>Adquirir, transmitir y mostrar los datos.</p><span class="more">Pulsa ↻</span></div><div class="f back"><p>ESP32-C6 → Wi-Fi y MQTT → ThingsBoard.</p><span class="goto" data-go="4">Ver arquitectura →</span></div></button>
+    <button class="rv flip" style="--c:#f6b74a"><div class="f front"><span class="fi">03</span><h3>Bajo consumo</h3><p>Funcionamiento de bajo consumo.</p><span class="more">Pulsa ↻</span></div><div class="f back"><p>De 1900 a 495 mAh/día con deep sleep; 180 de diseño.</p><span class="goto" data-go="14">Ver consumo →</span></div></button>
+    <button class="rv flip" style="--c:#ff7d63"><div class="f front"><span class="fi">04</span><h3>Energía solar</h3><p>Un sistema energéticamente autónomo.</p><span class="more">Pulsa ↻</span></div><div class="f back"><p>Panel de 3 W y celda 18650 (PVGIS).</p><span class="goto" data-go="15">Ver energía solar →</span></div></button>
+  </div>
+ </div>
+</section>
+
+<!-- 03 ESTADO -->
+<section class="slide" id="estado" data-title="Estado de la cuestión" data-num="03">
+ <div class="stage">
+  <div class="rv kicker"><span class="num">03</span>Estado de la cuestión</div>
+  <h2 class="rv">De menos a <em>más parecido</em></h2>
+  <div class="rv row-between" style="align-items:center">
+    <p class="lead" style="font-size:18px">Toca una fila o una columna.</p>
+    <div class="legend-ic"><span><span class="ic y">✓</span>lo tiene</span><span><span class="ic n">✗</span>no</span><span><span class="ic p"></span>en diseño</span><span><span class="ic u">–</span>no consta</span></div>
+  </div>
+  <div class="rv tablewrap">
+  <table class="mx" id="matrix">
+    <thead><tr><th>Trabajo</th><th data-col="1">T·HR</th><th data-col="2">CO₂</th><th data-col="3">Luz</th><th data-col="4">Suelo</th><th data-col="5">Solar</th><th data-col="6">U</th><th class="cov">Cobertura</th></tr></thead>
+    <tbody>
+      <tr data-v="y n n n n u" data-d="DHT11 con Arduino y Raspberry Pi. Un dato cada 15 min. Sin CO₂, luz, suelo ni energía solar."><td><b>Ardiansah et al.</b><span class="yr">2025</span></td></tr>
+      <tr data-v="y n n n y u" data-d="Viñedo. Temperatura, humedad y lluvia. GPRS cada 10 min. Batería de 2200 mAh y panel de 3 W. 96,9 % de datos entregados en 30 días."><td><b>Trilles et al.</b><span class="yr">2020</span></td></tr>
+      <tr data-v="n n y n y u" data-d="Almendro. Solo mide luz. LoRaWAN con el intervalo de envío adaptado a la batería. Panel de 0,5 W."><td><b>Candeias et al.</b><span class="yr">2022</span></td></tr>
+      <tr data-v="y n u n u u" data-d="Estación comercial, unos 230 €. Sin CO₂ ni suelo."><td><b>SenseCAP S2120</b><span class="yr">comercial</span></td></tr>
+      <tr class="close" data-v="y y y y y n" data-d="El más parecido. SHT31, SCD41, DS18B20, UV y suelo. LoRaWAN y paneles solares. No publica la incertidumbre de cada dato."><td><b>Săcăleanu et al.</b><span class="yr">2024</span><span class="badge">el más parecido</span></td></tr>
+      <tr class="mine" data-v="y y y y p y" data-d="Un nodo de menos de 50 € de electrónica, con un muestreo propio para cada sensor, que envía cada dato con su incertidumbre estimada. La parte solar está dimensionada, no ensayada en campo."><td><b>Este trabajo</b></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="rv detail" id="matrixD">Toca una fila o una columna.</div>
+ </div>
+</section>
+
+<!-- 04 ARQUITECTURA -->
+<section class="slide" id="arquitectura" data-title="Arquitectura" data-num="04">
+ <div class="stage">
+  <div class="rv kicker"><span class="num">04</span>Arquitectura</div>
+  <h2 class="rv">Tres capas, <em>del sensor a la pantalla</em></h2>
+  <div class="arch">
+    <div class="arch-stack">
+      <button class="rv layer" data-k="app" style="--c:#f6b74a"><span class="ln">Aplicación</span><span class="ls">ThingsBoard · Node-RED</span></button>
+      <button class="rv layer" data-k="red" style="--c:#86c5ff"><span class="ln">Red</span><span class="ls">Wi-Fi + MQTT</span></button>
+      <button class="rv layer on" data-k="per" style="--c:#7fe0b4"><span class="ln">Percepción</span><span class="ls">ESP32-C6 + 5 sensores</span></button>
+      <div class="packet"></div>
+    </div>
+    <div class="rv card arch-d" id="archD"></div>
+  </div>
+ </div>
+</section>
+
+<!-- 05 HARDWARE -->
+<section class="slide" id="hardware" data-title="Hardware" data-num="05">
+ <div class="stage">
+  <div class="rv kicker"><span class="num">05</span>Hardware</div>
+  <h2 class="rv">Cinco sensores y <em>un ESP32-C6</em></h2>
+  <div class="rv seg" id="hwSel"><button data-v="esp">ESP32</button><button data-v="sht">SHT31</button><button data-v="scd" class="on">SCD30</button><button data-v="as">AS7341</button><button data-v="ds">DS18B20</button><button data-v="hw">Suelo</button></div>
+  <div class="hw">
+    <figure class="rv hardware-visual">
+      <div class="hardware-image">
+        <img src="assets/hardware-nodo.png" alt="Prototipo real con ESP32-C6, sensores ambientales, conexiones y sondas en el sustrato" width="1376" height="768">
+        <svg class="wire-motion" viewBox="0 0 1376 768" preserveAspectRatio="none" aria-hidden="true">
+         <path id="wire-sht-pwr" d="M366 40 H518 V198"/>
+         <path id="wire-sht-sda" d="M370 80 H482 V312 H590"/>
+         <path id="wire-sht-scl" d="M370 101 H464 V299 H580"/>
+         <path id="wire-scd-power" d="M370 286 H535 V198 H580"/>
+         <path id="wire-scd-data" d="M370 328 H488 V312 H590"/>
+         <path id="wire-as-power" d="M370 524 H520 V40"/>
+         <path id="wire-as-data" d="M370 566 H487 V312 H590"/>
+         <path id="wire-onewire" d="M750 361 H850 V85 H1010 L1038 60"/>
+         <path id="wire-soil" d="M750 392 H873 V310 H1067"/>
+         <circle r="5" fill="#f6b74a"><animateMotion dur="4.4s" repeatCount="indefinite" path="M366 40 H518 V198"/></circle>
+         <circle r="4.5" fill="#86c5ff"><animateMotion dur="5.2s" begin="-1.7s" repeatCount="indefinite" path="M370 80 H482 V312 H590"/></circle>
+         <circle r="4.5" fill="#7fe0b4"><animateMotion dur="4.8s" begin="-3.1s" repeatCount="indefinite" path="M370 101 H464 V299 H580"/></circle>
+         <circle r="4.5" fill="#ff7d63"><animateMotion dur="4.1s" begin="-1.2s" repeatCount="indefinite" path="M370 286 H535 V198 H580"/></circle>
+         <circle r="4.5" fill="#86c5ff"><animateMotion dur="4.6s" begin="-2.2s" repeatCount="indefinite" path="M370 328 H488 V312 H590"/></circle>
+         <circle r="4.5" fill="#f6b74a"><animateMotion dur="6.1s" begin="-2.8s" repeatCount="indefinite" path="M370 524 H520 V40"/></circle>
+         <circle r="4.5" fill="#86c5ff"><animateMotion dur="5.5s" begin="-2.6s" repeatCount="indefinite" path="M370 566 H487 V312 H590"/></circle>
+         <circle r="5" fill="#f6b74a"><animateMotion dur="6.3s" begin="-3.5s" repeatCount="indefinite" path="M750 361 H850 V85 H1010 L1038 60"/></circle>
+         <circle r="5" fill="#b9a3ff"><animateMotion dur="5.8s" begin="-1.9s" repeatCount="indefinite" path="M750 392 H873 V310 H1067"/></circle>
+        </svg>
+      </div>
+      <figcaption>Pulsos ilustrativos, no datos reales</figcaption>
+    </figure>
+    <div class="rv card hw-d" id="hwD"></div>
+  </div>
+ </div>
+</section>
+
+<!-- 06 ADQUISICION -->
+<section class="slide" id="adquisicion" data-title="Cadena de adquisición" data-num="06">
+ <div class="stage">
+  <div class="rv kicker"><span class="num">06</span>Cadena de adquisición</div>
+  <h2 class="rv">Sondear <em>no es</em> muestrear</h2>
+  <p class="rv lead">Cada sensor, su ritmo y su filtro: todos acaban en <b>un dato cada 10 s</b>.</p>
+  <div class="rv seg big" id="pipeSel"><button data-v="0" class="on">SHT31-D</button><button data-v="1">SCD30</button><button data-v="2">DS18B20</button><button data-v="3">AS7341</button><button data-v="4">Suelo</button></div>
+  <div class="rv pipe" id="pipe"></div>
+  <div class="grid2">
+    <div class="rv card"><div class="lab">Una media es un filtro</div><p>El CO₂ necesita un <span class="term" data-t="fir">FIR</span> más selectivo: con solo 5 muestras, una media no basta.</p></div>
+    <div class="rv card"><div class="lab">Hacia la nube</div><p>Se envía la <b>media de 5 min</b>, filtrada antes de <span class="term" data-t="diezmar">diezmar</span>.</p></div>
+  </div>
+ </div>
+</section>
+
+<!-- 06b ALIASING -->
+<section class="slide" id="aliasing" data-title="Aliasing" data-num="06·b">
+ <div class="stage">
+  <div class="rv kicker"><span class="num">06·b</span>Pruébalo</div>
+  <h2 class="rv">¿Y si <em>no filtras</em> antes de diezmar?</h2>
+  <p class="rv lead">Una señal lenta con una componente rápida encima. Al diezmar sin filtrar, lo rápido se disfraza de <span class="term" data-t="aliasing">variación lenta</span>.</p>
+  <div class="rv widget wgrid">
+    <div>
+      <canvas id="aC" height="220"></canvas>
+      <div class="legend"><span><i style="background:rgba(255,255,255,.4)"></i>Señal (10 Hz)</span><span><i style="background:#7fe0b4"></i>Lo que queremos ver</span><span><i style="background:#ff7d63"></i>Sin filtrar</span><span><i style="background:#86c5ff"></i>Filtrado</span></div>
+      <div class="readout" style="margin-top:14px">
+        <div>Nuevo ritmo · Nyquist<b id="aNy">—</b></div>
+        <div>Lo rápido aparece como<b id="aAl">—</b></div>
+        <div>Amplitud falsa: sin filtro → filtrado<b id="aAmp">—</b></div>
+      </div>
+    </div>
+    <div class="side">
+      <div class="controls">
+        <label>Componente rápida <b id="aF">1,9 Hz</b><input type="range" id="aFr" min="0.1" max="4.9" step="0.1" value="1.9"></label>
+        <label>Diezmado M <b id="aM">10</b><input type="range" id="aMr" min="2" max="20" step="1" value="10"></label>
+        <div><div class="clab">Filtro antes de diezmar</div><div class="seg" id="aFilt"><button data-v="media" class="on">Media de M</button><button data-v="fir">FIR selectivo</button></div></div>
+      </div>
+      <div class="verdict" id="aV"></div>
+    </div>
+  </div>
+ </div>
+</section>
+
+<!-- 07 FREERTOS -->
+<section class="slide" id="freertos" data-title="FreeRTOS" data-num="07">
+ <div class="stage">
+  <div class="rv kicker"><span class="num">07</span>Ensayo E12 · <span class="term" data-t="freertos">FreeRTOS</span></div>
+  <h2 class="rv">Que lo urgente <em>no espere a lo lento</em></h2>
+  <div class="rv rt-layout">
+   <div class="rt-priority">
+    <span class="lab">REGISTRO DE EJECUCIÓN</span>
+    <button class="rt-priority-row on" data-priority="5"><b>5</b><span><strong>ADC del suelo</strong><small>50 Hz · esp_timer</small></span></button>
+    <button class="rt-priority-row" data-priority="3"><b>3</b><span><strong>I2C · I/O sincronizada</strong><small>SHT31-D 1 Hz · SCD30 0,5 Hz</small></span></button>
+    <button class="rt-priority-row" data-priority="3"><b>3</b><span><strong>1-Wire</strong><small>DS18B20 · 0,5 Hz</small></span></button>
+    <button class="rt-priority-row" data-priority="1"><b>1</b><span><strong>AS7341</strong><small>0,2 Hz · lectura lenta</small></span></button>
+   </div>
+   <div class="rt-path">
+    <div class="rt-step" data-step="1"><span>01</span><div><small>Adquisición</small><strong>Cola de muestras · 128</strong><p>Mutex del bus I2C con herencia de prioridad.</p></div></div>
+    <div class="rt-step" data-step="2"><span>02</span><div><small>Tratamiento · prioridad 4</small><strong>Bloque · diezmar · FIR · incertidumbre</strong><p>Una tarea escribe todos los canales derivados.</p></div></div>
+    <div class="rt-step" data-step="3"><span>03</span><div><small>Publicación · prioridad 2</small><strong>JSON cada 10 s</strong><p>Variables derivadas y marca de tiempo.</p></div></div>
+    <div class="rt-step" data-step="4"><span>04</span><div><small>Red · prioridad 2</small><strong>Wi-Fi y MQTT cada 3 s</strong><p>Cola de salida de 60 mensajes. Si cae la red, la cola conserva los datos.</p></div></div>
+   </div>
+   <aside class="rt-result">
+    <span class="lab">ENSAYO E12</span>
+    <strong id="rtMetric">431<small>/500</small></strong>
+    <p id="rtResultText">13,9 % de muestras perdidas con el AS7341 bloqueando el planificador cooperativo.</p>
+    <button class="rt-toggle" id="rtToggle" aria-pressed="false"><span></span>Mostrar solución FreeRTOS</button>
+   </aside>
+  </div>
+ </div>
+</section>
+<!-- 08 INCERTIDUMBRE -->
+<section class="slide" id="incertidumbre" data-title="Incertidumbre" data-num="08">
+ <div class="stage">
+  <div class="rv kicker"><span class="num">08</span>Incertidumbre estimada · <span class="term" data-t="gum">GUM</span></div>
+  <h2 class="rv">Cada dato sale como <em>valor ± U</em></h2>
+  <div class="unc">
+    <div class="side">
+      <div class="rv card tabs" id="uTabs">
+        <div class="seg"><button data-v="a" class="on">Tipo A</button><button data-v="b">Tipo B</button><button data-v="k">Factor k</button></div>
+        <p id="uTabTxt"></p>
+      </div>
+      <div class="rv vrow">
+        <span class="vchip">T <b>± 0,19 °C</b></span>
+        <span class="vchip">HR <b>± 1,9 %</b></span>
+        <span class="vchip">CO₂ <b>625 ± 73</b></span>
+      </div>
+    </div>
+    <div class="rv widget side">
+      <div style="font-size:19px">El agricultor ve <b>89 %</b> y el aviso salta en el <b>90 %</b>. ¿Puede estar tranquilo?</div>
+      <div class="controls"><label>Incertidumbre expandida U <b id="uU">± 1,9 %</b><input type="range" id="uUr" min="0" max="4" step="0.1" value="1.9"></label></div>
+      <svg id="uS" viewBox="0 0 600 128"></svg>
+      <div class="verdict" id="uV"></div>
+    </div>
+  </div>
+ </div>
+</section>
+
+<!-- 09 VALIDACION -->
+<section class="slide" id="validacion" data-title="Validación" data-num="09">
+ <div class="stage">
+  <div class="rv kicker"><span class="num">09</span>Validación · E13 y E15</div>
+  <h2 class="rv">Dos puntos fijos <em>y una sorpresa</em></h2>
+  <div class="grid3">
+    <div class="rv card val-card">
+      <div class="lab">Baño de hielo · 0 °C</div>
+      <div class="big-n mono-n">−0,01 <small>°C</small></div>
+      <div class="tol"><div class="tol-bar"><i style="--w:2%"></i></div><span>Dentro de la tolerancia de ± 0,5 °C.</span></div>
+    </div>
+    <div class="rv card val-card">
+      <div class="lab">Sal saturada · NaCl</div>
+      <div class="big-n mono-n">75,9 <small>%</small></div>
+      <div class="tol"><div class="tol-bar"><i style="--w:20%"></i></div><span>Frente a 75,5 %: dentro de ± 2.</span></div>
+    </div>
+    <div class="rv card val-card">
+      <div class="lab" style="color:var(--amber)">SCD30 frente a SHT31-D</div>
+      <div class="seg small" id="vSeg"><button data-v="t" class="on">Temperatura</button><button data-v="td">Punto de rocío</button></div>
+      <div class="big-n mono-n" id="vDiff" style="color:var(--amber)">+2,8 <small>°C</small></div>
+      <p id="vTxt" class="vtxt"></p>
+    </div>
+  </div>
+ </div>
+</section>
+
+<!-- 10 DISPOSICION -->
+<section class="slide" id="disposicion" data-title="Disposición de los nodos" data-num="10">
+ <div class="stage">
+  <div class="rv kicker"><span class="num">10</span>Disposición de los nodos</div>
+  <h2 class="rv">Tres nodos <em>para 324 m²</em></h2>
+  <p class="rv lead">Unos 3 nodos para 324 m² (Bhujel et al. 2020). Toca cada nodo.</p>
+  <div class="rv widget" style="padding:16px 22px">
+    <div class="scrollx"><svg id="map" viewBox="0 0 440 135"></svg></div>
+  </div>
+  <div class="rv card" id="mapInfo"><div class="lab">Toca un nodo</div><p>Reparto a 6, 18 y 30 m; los extremos se acercan a las puertas: por la norte entra el <span class="term" data-t="cierzo">cierzo</span> y por la sur el <span class="term" data-t="bochorno">bochorno</span>.</p></div>
+ </div>
+</section>
+
+<!-- 11 TOPOLOGIAS -->
+<section class="slide" id="topologias" data-title="Topologías de red" data-num="11">
+ <div class="stage">
+  <div class="rv kicker"><span class="num">11</span>Topologías de red</div>
+  <h2 class="rv">Una red <em>para cada tamaño</em></h2>
+  <div class="rv seg big" id="topoSel"><button data-v="0">Estrella · Wi-Fi</button><button data-v="1" class="on">Malla · Thread</button><button data-v="2">LoRaWAN</button></div>
+  <div class="topo">
+    <div class="rv card topo-svg" id="topoSvg"></div>
+    <div class="rv card" id="topoTxt"></div>
+  </div>
+ </div>
+</section>
+
+<!-- 12 PLATAFORMA -->
+<section class="slide" id="plataforma" data-title="Plataforma" data-num="12">
+ <div class="stage">
+  <div class="rv kicker"><span class="num">12</span>Plataforma</div>
+  <h2 class="rv">Del plano <em>al detalle de cada nodo</em></h2>
+  <div class="grid2">
+    <div class="side">
+      <div class="rv card"><div class="lab">ThingsBoard</div><p>Del plano del túnel al detalle de cada nodo.</p>
+        <a class="btn" href="https://eu.thingsboard.cloud/dashboards/all/3577f140-e5cf-11f1-a132-5352bc594cd2" target="_blank" rel="noopener">Abrir el dashboard ↗</a></div>
+      <div class="rv card"><div class="lab">Simulador en Node-RED</div><p>Dos nodos virtuales con datos de Open-Meteo y CAMS.</p></div>
+    </div>
+    <div class="rv widget side">
+      <div style="font-size:18px">Aviso de condensación: salta si el <span class="term" data-t="margen">margen</span> T − T<sub>rocío</sub> baja de <b>2 °C</b>.</div>
+      <div class="controls row">
+        <label>Temperatura del aire <b id="cT">12,0 °C</b><input type="range" id="cTr" min="0" max="30" step="0.5" value="12"></label>
+        <label>Humedad relativa <b id="cH">85 %</b><input type="range" id="cHr" min="40" max="100" step="1" value="85"></label>
+      </div>
+      <div class="readout two">
+        <div><span class="term" data-t="rocio">Punto de rocío</span><b id="cTd">—</b></div>
+        <div>Margen T − T<sub>rocío</sub><b id="cM">—</b></div>
+      </div>
+      <div class="verdict" id="cV"></div>
+      <p class="tiny">Fórmula de Magnus (Sonntag, 1990).</p>
+    </div>
+  </div>
+ </div>
+</section>
+
+<!-- 13 CONSUMO -->
+<section class="slide" id="consumo" data-title="Consumo" data-num="13">
+ <div class="stage">
+  <div class="rv kicker"><span class="num">13</span>Consumo · E14</div>
+  <h2 class="rv">Medido <em>estado a estado</em></h2>
+  <p class="rv lead">Multímetro en serie con la entrada de 5 V.</p>
+  <div class="rv card bars" id="bars"></div>
+  <div class="grid2">
+    <div class="rv card"><div class="lab">Lo que pesa el dormido</div><p>Los 11,3 mA en reposo son de la placa de desarrollo, no del módulo final.</p></div>
+    <div class="rv card"><div class="lab">Medida orientativa</div><p>Un multímetro no recoge los picos de transmisión: sirve para comparar.</p></div>
+  </div>
+ </div>
+</section>
+
+<!-- 14 SOLAR -->
+<section class="slide" id="solar" data-title="Energía solar" data-num="14">
+ <div class="stage">
+  <div class="rv kicker"><span class="num">14</span>Energía solar</div>
+  <h2 class="rv">Panel de 3 W y celda 18650 <em>en Alfaro</em></h2>
+  <div class="wgrid" style="grid-template-columns:400px 1fr">
+    <div class="side">
+      <div class="rv card"><div class="lab">Peor diciembre</div><div class="big-n" style="color:var(--amber)">× <span class="count" data-to="2.4" data-dec="1">0</span></div><p>El panel da 2,4 veces el consumo medido.</p></div>
+      <div class="rv card"><div class="lab">Autonomía sin sol</div><div class="big-n"><span class="count" data-to="4">0</span> → <span class="count" data-to="11">0</span><small> días</small></div><p>Con el consumo medido y con el de diseño.</p></div>
+    </div>
+    <div class="rv widget side">
+      <div class="controls row">
+        <label>Consumo diario <b id="sCv">495 mAh/día</b><input type="range" id="sCr" min="30" max="2000" step="5" value="495"></label>
+        <label style="flex:0 0 auto">Capacidad útil de la celda (mAh)<input type="number" id="sCap" min="100" max="5000" step="50" placeholder="pendiente"></label>
+      </div>
+      <div class="presets">
+        <button class="btn small ghost2 preset" data-v="1900">Siempre activo · 1900</button>
+        <button class="btn small ghost2 preset" data-v="495">Deep sleep medido · 495</button>
+        <button class="btn small ghost2 preset" data-v="180">Diseño · 180</button>
+        <button class="btn small ghost2 preset" data-v="33">Con SCD41 · 33</button>
+      </div>
+      <div class="readout">
+        <div>Autonomía sin sol<b id="sAut">—</b></div>
+        <div>Panel, peor diciembre<b id="sPan">—</b></div>
+        <div>El panel cubre<b id="sRat">—</b></div>
+      </div>
+      <div class="verdict" id="sV"></div>
+      <p class="tiny">Panel en diciembre: 2,4 × 495 ≈ 1190 mAh/día (<span class="term" data-t="pvgis">PVGIS</span>). <span class="pend">PENDIENTE: capacidad de la celda 18650</span></p>
+    </div>
+  </div>
+ </div>
+</section>
+
+<!-- 15 DORMIR -->
+<section class="slide" id="dormir" data-title="Dormir sin dejar de filtrar" data-num="15">
+ <div class="stage">
+  <div class="rv kicker"><span class="num">15</span>Dormir sin dejar de filtrar</div>
+  <h2 class="rv">Ahorrar <em>sin volver al aliasing</em></h2>
+  <div class="grid3">
+    <div class="rv card mode"><span class="tag" style="--c:#86c5ff">Nodo actual · v8.2b</span><h3>Siempre despierto</h3><div class="strip" data-m="0"></div><ul><li>Muestreo continuo.</li><li>Filtrado de cada canal.</li><li>Media de 5 min hacia la nube.</li></ul><p class="tiny">Buen dato, pero gasta demasiado para el sol.</p></div>
+    <div class="rv card mode"><span class="tag" style="--c:#ff7d63">Deep sleep medido</span><h3>Una foto al despertar</h3><div class="strip" data-m="1"></div><ul><li>Una muestra al despertar.</li><li>Sin filtrado.</li><li>Riesgo de aliasing.</li></ul><p class="tiny">Ahorra, pero pierde lo que hacía bueno al dato.</p></div>
+    <div class="rv card mode best"><span class="tag" style="--c:#7fe0b4">Propuesta · <span class="term" data-t="lp">núcleo LP</span></span><h3>Duerme el principal, no el muestreo</h3><div class="strip" data-m="2"></div><ul><li>El coprocesador de bajo consumo sigue muestreando.</li><li>Acumula en la memoria RTC.</li><li>Cada 5 min se envía la media.</li></ul></div>
+  </div>
+  <div class="rv card wide-note"><div class="lab" style="color:var(--lilac)">El cuello de botella</div><p>El <b>SCD30</b> se lleva alrededor del <b>90 %</b> del consumo. Con un <b>SCD41</b> en medida única, el consumo de diseño bajaría de <b>180</b> a unos <b>33 mAh/día</b>.</p></div>
+ </div>
+</section>
+
+<!-- 16 LIMITES -->
+<section class="slide" id="limites" data-title="Límites y siguientes pasos" data-num="16">
+ <div class="stage">
+  <div class="rv kicker"><span class="num">16</span>Límites y siguientes pasos</div>
+  <h2 class="rv">Límites <em>y siguientes pasos</em></h2>
+  <div class="grid2">
+    <div class="rv card"><div class="lab" style="color:var(--coral)">Límites</div>
+      <ul class="ticks">
+        <li>Aún no ha estado dentro de un invernadero.</li>
+        <li>Incertidumbre contrastada solo en dos puntos fijos (T y HR), no en el CO₂.</li>
+        <li>El CO₂ lee 30–50 ppm por debajo del exterior esperado.</li>
+        <li>La PAR no está calibrada.</li>
+        <li>Consumo orientativo, medido con la placa de desarrollo.</li>
+        <li>El deep sleep medido no conserva el filtrado.</li>
+      </ul></div>
+    <div class="rv card"><div class="lab">Siguientes pasos</div>
+      <ul class="ticks go">
+        <li>Ensayo de 24 a 48 h en el túnel de Alfaro.</li>
+        <li>Muestrear con el núcleo LP mientras duerme el principal.</li>
+        <li>Cambiar el SCD30 por un SCD41 con medida única.</li>
+        <li>Red Thread con router de borde en la caseta.</li>
+        <li>Calibrar la PAR.</li>
+        <li>FIR de 19 coeficientes: retardo de 26 a 18 s.</li>
+      </ul></div>
+  </div>
+  </div>
+</section>
+
+<!-- FIN -->
+<section class="slide cover end" id="gracias" data-title="Gracias" data-num="">
+ <div class="stage">
+  <div class="rv kicker">TFG n.º 688.26.114</div>
+  <h1 class="rv">Gracias.</h1>
+  <p class="rv claim">Y ahora, el sistema <mark>funcionando de verdad</mark>.</p>
+  <div class="rv cta-row"><a class="btn big" href="https://eu.thingsboard.cloud/dashboards/all/3577f140-e5cf-11f1-a132-5352bc594cd2" target="_blank" rel="noopener">Abrir ThingsBoard ↗</a><button class="btn ghost big" data-go="0">Volver al inicio</button></div>
+ </div>
+ <svg class="cover-art" viewBox="0 0 600 400" aria-hidden="true" style="opacity:.5">
+   <path d="M40 360 Q300 -60 560 360" fill="none" stroke="currentColor" stroke-width="2" opacity=".45"/>
+   <path d="M80 360 Q300 0 520 360" fill="none" stroke="#7fe0b4" stroke-width="1.5" opacity=".35"/>
+   <line x1="20" y1="360" x2="580" y2="360" stroke="currentColor" opacity=".4"/>
+ </svg>
+</section>
+
+</div>
+
+<nav class="m-nav" aria-label="Navegación de diapositivas">
+  <button id="prev" aria-label="Diapositiva anterior">←</button>
+  <span id="railNum">1</span>
+  <button id="next" aria-label="Siguiente diapositiva">→</button>
+</nav>
+
+<div class="tip" id="tip" role="tooltip"></div>
+
+<script src="movil.js" defer></script>
+</body>
+</html>

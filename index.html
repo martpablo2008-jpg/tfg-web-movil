@@ -27,8 +27,12 @@
     <button class="btn big" data-go="1">Empezar <span>→</span></button>
     <a class="btn ghost big" href="https://eu.thingsboard.cloud/dashboards/all/3577f140-e5cf-11f1-a132-5352bc594cd2" target="_blank" rel="noopener">El proyecto funcionando ↗</a>
   </div>
-  <p class="rv tiny">Pasa de diapositiva con ← → del teclado, con los botones de abajo o deslizando el dedo. La incertidumbre se estima con las hojas de datos y la dispersión de las muestras; está contrastada en dos puntos fijos (temperatura y humedad), no en el CO₂.</p>
+  <p class="rv tiny">En el móvil, desplázate hacia abajo. En ordenador, usa ↑ ↓ o los controles laterales. La incertidumbre está contrastada en dos puntos fijos, no en el CO₂.</p>
  </div>
+<figure class="cover-qr rv">
+  <img src="assets/qr-presentacion.png" alt="Código QR para abrir la presentación desde un móvil" width="427" height="427">
+  <figcaption>Escanea para abrir<br>la presentación en tu móvil</figcaption>
+</figure>
  <svg class="cover-art" viewBox="0 0 600 400" aria-hidden="true">
    <path d="M40 360 Q300 -60 560 360" fill="none" stroke="currentColor" stroke-width="2" opacity=".45"/>
    <path d="M80 360 Q300 0 520 360" fill="none" stroke="#7fe0b4" stroke-width="1.5" opacity=".35"/>
@@ -139,28 +143,32 @@
   <div class="rv kicker"><span class="num">05</span>Hardware</div>
   <h2 class="rv">Cinco sensores <em>alrededor de un ESP32-C6</em></h2>
   <div class="hw">
-    <div class="rv board-wrap">
-      <div class="model-tools">
-       <div class="seg small" id="modelMode"><button data-v="schematic" class="on">Esquema</button><button data-v="model">Modelo 3D</button></div>
-       <span id="modelHint">Arrastra para girar</span>
+    <figure class="rv hardware-visual">
+      <div class="hardware-image">
+        <img src="assets/hardware-nodo.png" alt="Prototipo real con ESP32-C6, sensores ambientales, conexiones y sondas en el sustrato" width="1376" height="768">
+        <svg class="wire-motion" viewBox="0 0 1376 768" preserveAspectRatio="none" aria-hidden="true">
+         <path id="wire-sht-pwr" d="M366 40 H518 V198"/>
+         <path id="wire-sht-sda" d="M370 80 H482 V312 H590"/>
+         <path id="wire-sht-scl" d="M370 101 H464 V299 H580"/>
+         <path id="wire-scd-power" d="M370 286 H535 V198 H580"/>
+         <path id="wire-scd-data" d="M370 328 H488 V312 H590"/>
+         <path id="wire-as-power" d="M370 524 H520 V40"/>
+         <path id="wire-as-data" d="M370 566 H487 V312 H590"/>
+         <path id="wire-onewire" d="M750 361 H850 V85 H1010 L1038 60"/>
+         <path id="wire-soil" d="M750 392 H873 V310 H1067"/>
+         <circle r="5" fill="#f6b74a"><animateMotion dur="4.4s" repeatCount="indefinite" path="M366 40 H518 V198"/></circle>
+         <circle r="4.5" fill="#86c5ff"><animateMotion dur="5.2s" begin="-1.7s" repeatCount="indefinite" path="M370 80 H482 V312 H590"/></circle>
+         <circle r="4.5" fill="#7fe0b4"><animateMotion dur="4.8s" begin="-3.1s" repeatCount="indefinite" path="M370 101 H464 V299 H580"/></circle>
+         <circle r="4.5" fill="#ff7d63"><animateMotion dur="4.1s" begin="-1.2s" repeatCount="indefinite" path="M370 286 H535 V198 H580"/></circle>
+         <circle r="4.5" fill="#86c5ff"><animateMotion dur="4.6s" begin="-2.2s" repeatCount="indefinite" path="M370 328 H488 V312 H590"/></circle>
+         <circle r="4.5" fill="#f6b74a"><animateMotion dur="6.1s" begin="-2.8s" repeatCount="indefinite" path="M370 524 H520 V40"/></circle>
+         <circle r="4.5" fill="#86c5ff"><animateMotion dur="5.5s" begin="-2.6s" repeatCount="indefinite" path="M370 566 H487 V312 H590"/></circle>
+         <circle r="5" fill="#f6b74a"><animateMotion dur="6.3s" begin="-3.5s" repeatCount="indefinite" path="M750 361 H850 V85 H1010 L1038 60"/></circle>
+         <circle r="5" fill="#b9a3ff"><animateMotion dur="5.8s" begin="-1.9s" repeatCount="indefinite" path="M750 392 H873 V310 H1067"/></circle>
+        </svg>
       </div>
-      <svg id="board" viewBox="0 0 880 520"></svg>
-      <div class="proto3d" id="proto3d" aria-label="Modelo 3D manipulable del prototipo">
-       <div class="proto-shadow"></div>
-       <div class="proto-assembly" id="protoAssembly">
-        <div class="proto-board">
-         <span class="proto-chip">ESP32-C6</span>
-         <span class="proto-pin p1"></span><span class="proto-pin p2"></span><span class="proto-pin p3"></span>
-        </div>
-        <div class="proto-sensor sensor-sht"><span>SHT31-D</span></div>
-        <div class="proto-sensor sensor-scd"><span>CO₂</span></div>
-        <div class="proto-sensor sensor-as"><span>AS7341</span></div>
-        <div class="proto-sensor sensor-ds"><span>DS18B20</span></div>
-        <div class="proto-sensor sensor-hw"><span>SUELO</span></div>
-       </div>
-      </div>
-      <div class="seg small busf" id="busSel"><button data-v="all" class="on">Todo</button><button data-v="i2c">I2C</button><button data-v="ow">1-Wire</button><button data-v="adc">ADC</button></div>
-    </div>
+      <figcaption>Pulsos animados · recorrido ilustrativo de las conexiones, no datos en tiempo real</figcaption>
+    </figure>
     <div class="rv card hw-d" id="hwD"></div>
   </div>
  </div>
@@ -237,7 +245,6 @@
   </div>
  </div>
 </section>
-
 <!-- 08 INCERTIDUMBRE -->
 <section class="slide" id="incertidumbre" data-title="Incertidumbre" data-num="08">
  <div class="stage">
